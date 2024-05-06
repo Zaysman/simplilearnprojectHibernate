@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.isaiah.objects.Student" table="studenttable">
+        <id name="rollNo" type="java.lang.Integer">
+			<generator class="native"></generator>
+        </id>
+        
+        <property name="name" type="java.lang.String"></property>
+        
+        <!-- Add your other properties here -->
+        <!-- Example property: -->
+        <!-- <property name="[Your_Property_Name]" column="[Your_Column_Name]" type="[Property_Type]" /> -->
+        
+    </class>
+</hibernate-mapping>
