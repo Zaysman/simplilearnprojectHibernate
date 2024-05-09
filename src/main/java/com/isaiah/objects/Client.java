@@ -219,7 +219,10 @@ public class Client {
 		try {
 			transaction = session.beginTransaction();
 			//Query query = session.createQuery("from Student s where s.rollNo= 2");
-			Query query = session.createQuery("from Student s where s.name='John Doe'");
+			//Query query = session.createQuery("from Student s where s.name='John Doe'");
+			
+			Query query = session.createQuery("from Student where rollNo=:rollNo");
+			query.setParameter("rollNo", 2);
 			List<Student> stList= query.list();
 			st = stList.getFirst();
 		} catch(Exception e) {
