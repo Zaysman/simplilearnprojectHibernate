@@ -2,6 +2,8 @@ package com.isaiah.objects;
 
 import com.isaiah.objects.Student;
 
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -10,6 +12,7 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 
 public class Client {
 	
@@ -182,6 +185,55 @@ public class Client {
 	}
 	
 	
+	public List<Student> getAllStudents() {
+		Session session = sessionFactory.openSession();
+		Transaction transaction = null;
+		List<Student> studentList = null;
+		
+		try {
+			transaction = session.beginTransaction();
+			Query query = session.createQuery("from Student"); //For this line, make sure that from <Classname> is the name of the entity class, NOT the table itself.
+			studentList = query.list();
+			transaction.commit();
+		} catch(Exception e) {
+			
+			if(transaction != null) {
+				transaction.rollback();
+			}
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		
+		
+		
+		return studentList;
+	}
+	
+	
+	public Student hibernateTestQuery() {
+		Session session = sessionFactory.openSession();
+		Transaction transaction = null;
+		Student st = null;
+		
+		try {
+			transaction = session.beginTransaction();
+			//Query query = session.createQuery("from Student s where s.rollNo= 2");
+			Query query = session.createQuery("from Student s where s.name='John Doe'");
+			List<Student> stList= query.list();
+			st = stList.getFirst();
+		} catch(Exception e) {
+			
+			if(transaction != null) {
+				transaction.rollback();
+			}
+		} finally {
+			session.close();
+		}
+		
+		
+		return st;
+	}
 	
 	
 	
