@@ -12,11 +12,12 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
 public class Client {
 	
-	Configuration configuration = new Configuration().configure(); //This line was added right I added the Hibernate annotations to the Student class
+	Configuration configuration = new Configuration().configure(); //This line was added right I added the Hibernate annotations to the Student class.
 	
 	StandardServiceRegistry standardRegistry = new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
 	
@@ -220,7 +221,6 @@ public class Client {
 			transaction = session.beginTransaction();
 			//Query query = session.createQuery("from Student s where s.rollNo= 2");
 			//Query query = session.createQuery("from Student s where s.name='John Doe'");
-			
 			Query query = session.createQuery("from Student where rollNo=:rollNo");
 			query.setParameter("rollNo", 2);
 			List<Student> stList= query.list();
@@ -239,7 +239,32 @@ public class Client {
 	}
 	
 	
-	
+	public List<Student> nativeSQLTestQuery() {
+		List<Student> studentList = null;
+		Session session = sessionFactory.openSession();
+		Transaction transaction = null;
+		
+		try {
+			transaction = session.beginTransaction();
+			NativeQuery query = session.createNativeQuery("Select * from studenttable"); //We use a native query if we want to
+			query.addEntity(Student.class);
+			
+			studentList = query.list();
+			transaction.commit();
+		} catch(Exception e) {
+			
+			if(transaction != null) {
+				transaction.rollback();
+			}
+			
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		
+		
+		return studentList;
+	}
 	
 
 }
